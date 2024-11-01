@@ -273,6 +273,60 @@
         <mxCell id="9N_9J7PeLyJ5hokE9j-_-47" value="&lt;font style=&quot;font-size: 11px;&quot;&gt;InvalidLesson&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
           <mxGeometry x="110" y="158" width="90" height="30" as="geometry" />
         </mxCell>
+        <mxCell id="9N_9J7PeLyJ5hokE9j-_-48" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="7baba1c4bc27f4b0-8" target="7baba1c4bc27f4b0-2">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="500" y="730" as="sourcePoint" />
+            <mxPoint x="550" y="680" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="160" y="670" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="9N_9J7PeLyJ5hokE9j-_-49" value="SpecificTime(Schedule)" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="9N_9J7PeLyJ5hokE9j-_-48">
+          <mxGeometry x="-0.197" y="1" relative="1" as="geometry">
+            <mxPoint x="18" y="-9" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="9N_9J7PeLyJ5hokE9j-_-50" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="7baba1c4bc27f4b0-8" target="y-mU8Rs5Hdihbz6Hta4c-8">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="340" y="760" as="sourcePoint" />
+            <mxPoint x="1210" y="710" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="770" y="700" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="9N_9J7PeLyJ5hokE9j-_-51" value="CreateLeasson(LessonType, mode, startTime, timeSlots)" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="9N_9J7PeLyJ5hokE9j-_-50">
+          <mxGeometry x="-0.0418" y="-1" relative="1" as="geometry">
+            <mxPoint x="4" y="-11" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="9N_9J7PeLyJ5hokE9j-_-52" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="7baba1c4bc27f4b0-8" target="y-mU8Rs5Hdihbz6Hta4c-9">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="320" y="790" as="sourcePoint" />
+            <mxPoint x="690" y="750" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="860" y="720" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="9N_9J7PeLyJ5hokE9j-_-53" value="Save(Lesson)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="975" y="698" width="100" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="9N_9J7PeLyJ5hokE9j-_-54" value="" style="html=1;labelBackgroundColor=#ffffff;startArrow=none;startFill=0;startSize=6;endArrow=classic;endFill=1;endSize=6;jettySize=auto;orthogonalLoop=1;strokeWidth=1;dashed=1;fontSize=14;rounded=0;" edge="1" parent="1" source="7baba1c4bc27f4b0-2" target="7baba1c4bc27f4b0-8">
+          <mxGeometry width="60" height="60" relative="1" as="geometry">
+            <mxPoint x="160" y="860" as="sourcePoint" />
+            <mxPoint x="220" y="800" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="160" y="750" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="9N_9J7PeLyJ5hokE9j-_-55" value="Confirmation" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="9N_9J7PeLyJ5hokE9j-_-54">
+          <mxGeometry x="-0.2122" y="2" relative="1" as="geometry">
+            <mxPoint x="-19" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
