@@ -21,4 +21,4 @@ OCL: ```context Offering```
 English: A client does not have multiple bookings on the same day and time slot.
 
 OCL: ```context Client```
-</br>```inv: slef.Bookings --> forAll(bo1, bo2 | bo1 <> bo2 implies bo1.date <> bo2.date or bo1.timeSlot <> bo2.timeSlot)```
+</br>```inv: slef.Bookings --> forAll(bo1, bo2 | bo1 <> bo2 implies bo1.date <> bo2.date and bo1.timeSlot <> bo2.timeSlot)```
