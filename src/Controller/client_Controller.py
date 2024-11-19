@@ -14,12 +14,6 @@ def handle_client_menu():
 
         if choice == "1":
             view_available_lessons()
-            client_id = input("\nEnter your client ID: ")  # Get client ID from user
-            try:
-                client_id = int(client_id)  # Ensure it's an integer
-                book_lesson(client_id)  # Pass the client_id to book_lesson()
-            except ValueError:
-                print("Invalid client ID. Please enter a numeric value.")
         elif choice == "2":
             age = input("Enter your age: ")
             try:
