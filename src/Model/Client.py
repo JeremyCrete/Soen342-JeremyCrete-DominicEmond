@@ -1,27 +1,22 @@
-class CLient:
-    name: str
-    phoneNumber: int
-    age: int
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship
+from database import Base
 
-    def get_name(self):
-        return self.name
-    
-    def set_name(self, name):
+class Client(Base):
+    __tablename__ = 'client'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String, nullable=False)
+    phone_number = Column(String, nullable=False)
+    age = Column(Integer, nullable=False)
+
+    # Relationship to Booking: A client can have many bookings
+    bookings = relationship("Booking", back_populates="client")  # This links with the `client` relationship in Booking
+
+    def __init__(self, name, phone_number, age):
         self.name = name
-    
-    def get_phoneNumber(self):
-        return self.phoneNumber
-    
-    def set_phoeNumber(self, phoneNumber):
-        self.phoneNumber = phoneNumber
-
-    def get_age(self):
-        return self.age
-    
-    def set_age(self, age):
+        self.phone_number = phone_number
         self.age = age
 
-    def __eq__(self, obj):
-        if not isinstance(obj, CLient):
-            return False
-        return (self.age == obj.age and self.name == obj.name and self.phoneNumber == obj.phoneNumber)
+    def __repr__(self):
+        return f"Client(name={self.name}, phone_number={self.phone_number}, age={self.age})"

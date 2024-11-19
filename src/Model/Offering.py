@@ -1,34 +1,23 @@
-class Offering:
-    def __init__(self, is_full, is_group_offering, lesson_type):
+from sqlalchemy import Column, Integer, String, Boolean, Enum
+from sqlalchemy.orm import relationship
+from Model.Type import Type
+from database import Base
+
+class Offering(Base):
+    __tablename__ = 'offerings'  # Changed to plural for consistency
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    is_full = Column(Boolean, nullable=False)  # Using Boolean for clarity
+    lesson_type = Column(Enum(Type), nullable=False)
+    is_group_offering = Column(Boolean, nullable=False)  # Added field for group offerings
+
+    # Relationship to Booking: An offering can have many bookings
+    bookings = relationship("Booking", back_populates="offering")  # This links with the `offering` relationship in Booking
+
+    def __init__(self, is_full, lesson_type, is_group_offering):
         self.is_full = is_full
-        self.is_group_offering = is_group_offering
         self.lesson_type = lesson_type
-
-    def is_full(self):
-        return self.is_full
-
-    def is_group_offering(self):
-        return self.is_group_offering
-
-    def get_lesson_type(self):
-        return self.lesson_type
-
-    def set_full(self, is_full):
-        self.is_full = is_full
-
-    def set_group_offering(self, is_group_offering):
         self.is_group_offering = is_group_offering
 
-    def set_lesson_type(self, lesson_type):
-        self.lesson_type = lesson_type
-
-    def __eq__(self, other):
-        if isinstance(other, Offering):
-            return (self.is_full == other.is_full and
-                    self.is_group_offering == other.is_group_offering and
-                    self.lesson_type == other.lesson_type)
-        return False
-
-    def __str__(self):
-        return (f"Offering(is_full={self.is_full}, is_group_offering={self.is_group_offering}, "
-                f"lesson_type={self.lesson_type})")
+    def __repr__(self):
+        return f"Offering(id={self.id}, is_full={self.is_full}, lesson_type={self.lesson_type}, is_group_offering={self.is_group_offering})"
