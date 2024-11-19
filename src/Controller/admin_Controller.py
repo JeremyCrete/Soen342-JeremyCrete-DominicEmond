@@ -1,8 +1,12 @@
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 from Controller.lesson_Controller import create_lesson
-from Controller.cancelBooking import get_user_bookings, delete_booking
+from Controller.cancelBooking import delete_booking
 from View.admin_view import display_admin_menu, get_admin_choice
 from database import SessionLocal
+from Model import Booking, Lesson, Instructor, Client
+from Model.Type import Type
+from Model.Offering import Offering
 
 
 def handle_admin_menu():
@@ -35,7 +39,7 @@ def handle_admin_menu():
             # Display bookings
             print("\n--- Bookings ---")
             for idx, booking in enumerate(bookings, start=1):
-                print(f"{idx}. Booking ID: {booking.id}, Offering ID: {booking.offering_id}")
+                print(f"{idx}. Booking ID: {booking.bookingid}, Offering ID: {booking.offering_id}")
 
             # Ask if admin wants to delete a booking
             delete_choice = input("\nDo you want to delete a booking? (yes/no): ").strip().lower()
@@ -58,28 +62,41 @@ def handle_admin_menu():
             print("Invalid option. Please try again.")
 
 
+
 # Helper methods for database operations related to admin actions
+
 def get_user_bookings(client_id: int):
     """
-    Retrieves bookings for a given client.
+    Retrieves bookings for a given client and prints the client's name and lesson details.
     """
-    session: Session = SessionLocal()
+    session = SessionLocal()  # Create a session
     try:
-        # Query bookings for the given client
-        bookings = session.execute(
-            """
-            SELECT b.id, b.offering_id
-            FROM Booking b
-            WHERE b.client_id = :client_id
-            """,
-            {"client_id": client_id}
-        ).fetchall()
-        return bookings
+        # Query bookings for the given client and join with the Offering and Client tables to get lesson details
+        bookings = session.query(Booking).join(Offering).join(Client).filter(Booking.client_id == client_id).all()
+        
+        if not bookings:
+            print(f"No bookings found for Client ID {client_id}.")
+            return []
+
+        # Fetch client details
+        client = session.query(Client).filter(Client.id == client_id).first()
+
+        print(f"Bookings for Client: {client.name} (Client ID {client.id}):")
+        for booking in bookings:
+            offering = booking.offering  # Get the offering object from the booking
+            lesson_type = offering.lesson_type
+            mode = "Group" if offering.is_group_offering else "Private"
+            print(f"Booking ID: {booking.bookingid}, Offering: {offering.id}, Lesson Type: {lesson_type}, Mode: {mode}")
+
+        return bookings  # Return the bookings and offering data
+
     except Exception as e:
         print(f"Error retrieving bookings: {e}")
         return []
     finally:
-        session.close()
+        session.close()  # Always close the session
+
+
 
 
 def delete_booking(client_id: int, booking_id: int):
@@ -91,7 +108,7 @@ def delete_booking(client_id: int, booking_id: int):
         # Delete the booking
         session.execute(
             """
-            DELETE FROM Booking
+            DELETE FROM booking
             WHERE id = :booking_id AND client_id = :client_id
             """,
             {"booking_id": booking_id, "client_id": client_id}
@@ -103,13 +120,55 @@ def delete_booking(client_id: int, booking_id: int):
         print(f"Error deleting booking: {e}")
     finally:
         session.close()
-    
 
-from sqlalchemy.orm import Session
-from Model.Lesson import Lesson  # Assuming Lesson model is defined correctly
-from Model.Type import Type  # Assuming Type enum is already defined
-from database import SessionLocal
 
+def delete_client(client_id: int):
+    """
+    Deletes a client from the database.
+    """
+    session: Session = SessionLocal()
+    try:
+        # Delete the client from the Client table
+        session.execute(
+            """
+            DELETE FROM client
+            WHERE id = :client_id
+            """,
+            {"client_id": client_id}
+        )
+        session.commit()
+        print(f"Client ID {client_id} deleted successfully.")
+    except Exception as e:
+        session.rollback()
+        print(f"Error deleting client: {e}")
+    finally:
+        session.close()
+
+
+def delete_instructor(instructor_id: int):
+    """
+    Deletes an instructor from the database.
+    """
+    session: Session = SessionLocal()
+    try:
+        # Delete the instructor from the Instructor table
+        session.execute(
+            """
+            DELETE FROM instructor
+            WHERE id = :instructor_id
+            """,
+            {"instructor_id": instructor_id}
+        )
+        session.commit()
+        print(f"Instructor ID {instructor_id} deleted successfully.")
+    except Exception as e:
+        session.rollback()
+        print(f"Error deleting instructor: {e}")
+    finally:
+        session.close()
+
+
+# Helper methods for creating a lesson (using the `create_lesson` from Controller)
 def create_lesson():
     """
     Creates a new lesson by prompting the admin for necessary details.

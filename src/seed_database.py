@@ -34,15 +34,17 @@ def seed_instructors():
 def seed_lessons():
     """Add some sample lessons to the database."""
     lesson_data = [
-        {"mode": "group", "lesson_type": Type.YOGA},
-        {"mode": "private", "lesson_type": Type.KARATE},
+        {"mode": "group", "lesson_type": Type.YOGA, "is_active": True},
+        {"mode": "private", "lesson_type": Type.KARATE, "is_active": True},
     ]
     session = SessionLocal()
     for lesson in lesson_data:
-        new_lesson = Lesson(**lesson)
+        new_lesson = Lesson(**lesson)  # Pass the dictionary with the correct keys
         session.add(new_lesson)
     session.commit()
     print(f"Seeded {len(lesson_data)} lessons.")
+
+
 
 def seed_locations():
     """Add some sample locations to the database."""
@@ -60,8 +62,10 @@ def seed_locations():
 def seed_offerings():
     """Add some sample offerings to the database."""
     offering_data = [
-        {"is_full": False, "is_group_offering": True, "lesson_type": "Yoga"},
-        {"is_full": False, "is_group_offering": False, "lesson_type": "Swimming"},
+        {"is_full": False, "is_group_offering": True, "lesson_type": Type.YOGA, "group_size": 2},  # Group lesson
+        {"is_full": False, "is_group_offering": False, "lesson_type": Type.KARATE, "group_size": 1},  # Private lesson
+        {"is_full": False, "is_group_offering": True, "lesson_type": Type.SWIMMING, "group_size": 2},  # Group lesson
+        {"is_full": False, "is_group_offering": False, "lesson_type": Type.DANCE, "group_size": 1},  # Private lesson
     ]
     session = SessionLocal()
     for offering in offering_data:
@@ -69,6 +73,7 @@ def seed_offerings():
         session.add(new_offering)
     session.commit()
     print(f"Seeded {len(offering_data)} offerings.")
+
 
 
 def seed_database():

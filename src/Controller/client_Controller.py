@@ -14,7 +14,12 @@ def handle_client_menu():
 
         if choice == "1":
             view_available_lessons()
-            book_lesson()
+            client_id = input("\nEnter your client ID: ")  # Get client ID from user
+            try:
+                client_id = int(client_id)  # Ensure it's an integer
+                book_lesson(client_id)  # Pass the client_id to book_lesson()
+            except ValueError:
+                print("Invalid client ID. Please enter a numeric value.")
         elif choice == "2":
             age = input("Enter your age: ")
             try:
@@ -91,43 +96,64 @@ def view_available_lessons():
     """Fetch and display available lessons."""
     session = Session()
     try:
-        lessons = session.query(Lesson).all()  # Adjust condition based on your schema
-        if not lessons:
+        offerings = session.query(Offering).all()  # Fetch all offerings
+        if not offerings:
             print("No available lessons found.")
         else:
             print("Available Lessons:")
-            for lesson in lessons:
-                print(f"{lesson.id}. {lesson.mode} - {lesson.lesson_type}")
+            for offering in offerings:
+                status = "Available" if not offering.is_full else "Full"
+                lesson_mode = "Group" if offering.is_group_offering else "Private"
+                # Check the number of people already booked for group lessons
+                if offering.is_group_offering:
+                    booked_count = session.query(Booking).filter(Booking.offering_id == offering.id).count()
+                    status = "Available" if booked_count < offering.group_size else "Full"
+                    print(f"{offering.id}. {lesson_mode} - {offering.lesson_type} (Booked: {booked_count}/{offering.group_size})")
+                else:
+                    print(f"{offering.id}. {lesson_mode} - {offering.lesson_type} ({status})")
     except Exception as e:
         print(f"Error fetching lessons: {e}")
     finally:
         session.close()
 
-def book_lesson():
+
+
+
+def book_lesson(client_id):
     """Book a lesson."""
     lesson_id = input("\nEnter the lesson ID to book: ")
-    client_id = input("Enter your client ID: ")
 
     session = Session()
     try:
         lesson = session.query(Offering).filter(Offering.id == lesson_id).first()
-        if lesson and lesson.is_full is False:
-            # Create a new booking
-            new_booking = Booking(client_id=client_id, offering_id=lesson_id)
-            session.add(new_booking)
-            session.commit()
+        if lesson and not lesson.is_full:
+            # Check if the group size has been reached
+            bookings_count = session.query(Booking).filter(Booking.offering_id == lesson_id).count()
+            if bookings_count >= lesson.group_size:
+                lesson.is_full = True
+                session.commit()
+                print("This lesson is no longer available.")
+            else:
+                # Create a new booking
+                new_booking = Booking(client_id=client_id, offering_id=lesson_id)
+                session.add(new_booking)
+                session.commit()
 
-            # Update the lesson availability
-            lesson.is_full = True
-            session.commit()
+                # Update the lesson availability if it's now full
+                if bookings_count + 1 >= lesson.group_size:
+                    lesson.is_full = True
+                    session.commit()
 
-            print(f"Booking successful! Your booking ID is {new_booking.bookingid}.")
+                print(f"Booking successful! Your booking ID is {new_booking.bookingid}.")
         else:
             print("This lesson is no longer available.")
     except Exception as e:
         print(f"Error booking lesson: {e}")
     finally:
         session.close()
+
+
+
 
 def view_my_bookings():
     """Display bookings for the client."""
@@ -141,11 +167,13 @@ def view_my_bookings():
         else:
             print("Your Bookings:")
             for booking in bookings:
-                print(f"Booking ID {booking.bookingid}: {booking.offering.lesson_type}")
+                print(f"Booking ID {booking.bookingid}: {booking.offering.lesson_type} ({'Group' if booking.offering.is_group_offering else 'Private'})")
     except Exception as e:
         print(f"Error fetching bookings: {e}")
     finally:
         session.close()
+
+
 
 def book_offer(client_id):
     """Book a lesson for the client."""
