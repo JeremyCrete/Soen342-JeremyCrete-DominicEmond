@@ -1,7 +1,7 @@
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 from Model import Client, Offering, Lesson, Schedule, Timeslot, Location
-from database import engine  # Assuming you have an engine defined in database.py
+from database import engine  
 from Model import Booking
 
 # Initialize the session maker

@@ -1,7 +1,7 @@
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import IntegrityError
-from Model import Instructor  # Ensure the Instructor model is imported
-from database import engine  # Assuming you have an engine defined in database.py
+from Model import Instructor  
+from database import engine  
 from View.instructor_view import display_instructor_menu, get_instructor_choice
 from Model import Lesson, InstructorAvailability
 from datetime import date

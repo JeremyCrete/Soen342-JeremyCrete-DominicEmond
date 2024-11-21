@@ -1,7 +1,7 @@
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
-from Model import Client, Offering, Booking, Lesson # Import SQLAlchemy models
-from database import engine  # Assuming you have an engine defined in database.py
+from Model import Client, Offering, Booking, Lesson 
+from database import engine  
 from View.client_view import client_choice, client_menu
 
 # Initialize the session maker
@@ -20,7 +20,7 @@ def handle_client_menu():
                 age = int(age)
                 if age < 18:
                     print("You must be 18 or older to create a booking. Returning to the menu.")
-                    continue  # Return to the menu if not old enough
+                    continue  
             except ValueError:
                 print("Invalid age. Please enter a numeric value.")
                 continue

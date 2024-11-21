@@ -7,9 +7,9 @@ from datetime import date
 def seed_clients():
     """Add some sample clients to the database."""
     client_data = [
-        {"name": "John Doe", "phone_number": "123-456-7890", "age": 30},
+        {"name": "Jake Doe", "phone_number": "123-456-7890", "age": 38},
         {"name": "Jeremy Crete", "phone_number": "514-324-3054", "age": 21},
-        {"name": "Jane Smith", "phone_number": "987-654-3210", "age": 25},
+        {"name": "Teddy Smith", "phone_number": "345-345-2312", "age": 26},
     ]
     session = SessionLocal()
     for client in client_data:
@@ -21,8 +21,8 @@ def seed_clients():
 def seed_instructors():
     """Add some sample instructors to the database."""
     instructor_data = [
-        {"name": "Alice Johnson", "phone_number": "555-1234", "start_date": date(2022, 5, 1), "end_date": date(2024, 5, 1), "specialization": "Yoga"},
-        {"name": "Bob Brown", "phone_number": "555-5678", "start_date": date(2021, 6, 1), "end_date": date(2023, 6, 1), "specialization": "Karate"},
+        {"name": "Stephanie Crete", "phone_number": "524-234-1234", "start_date": date(2022, 5, 1), "end_date": date(2024, 5, 1), "specialization": "Yoga"},
+        {"name": "Louis Brown", "phone_number": "364-938-8294", "start_date": date(2021, 6, 1), "end_date": date(2023, 6, 1), "specialization": "Karate"},
     ]
     session = SessionLocal()
     for instructor in instructor_data:
